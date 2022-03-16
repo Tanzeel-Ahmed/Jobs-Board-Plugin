@@ -176,7 +176,7 @@ class My_First_Plugin {
 	 * @since    1.0.0
 	 * @access   private
 	 */
-	private function define_public_hooks() {
+	private function define_public_hooks() { 
 
 		$plugin_public = new My_First_Plugin_Public( $this->get_plugin_name(), $this->get_version() );
 
