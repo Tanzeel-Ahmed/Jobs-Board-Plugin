@@ -184,7 +184,7 @@ class My_First_Plugin {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		// add shortcode
-		$this->loader->add_shortcode( 'wp10shortcode1', $plugin_public, 'public_jobs_board' ); //grid display
+		$this->loader->add_shortcode( 'wp10shortcode1', $plugin_public, 'public_jobs_board' ); //grid 
 	}
 
 	/**
