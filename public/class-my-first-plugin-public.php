@@ -239,7 +239,7 @@ class My_First_Plugin_Public {
 
 			global $post;
 
-			/* Checks for single template by p	ost type */
+			/* This is for single template by post type.*/
 			if ( $post->post_type == 'job' ) {
 				if ( file_exists( plugin_dir_path( __FILE__ ) . 'templates/single-job.php' ) ) {
 					return plugin_dir_path( __FILE__ ) . 'templates/single-job.php';

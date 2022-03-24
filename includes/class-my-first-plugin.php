@@ -187,7 +187,7 @@ class My_First_Plugin {
 		// add shortcode
 		$this->loader->add_shortcode( 'wp10shortcode1', $plugin_public, 'public_jobs_board' ); //grid 
 
-		/* Filter the single_template with our custom function*/
+		/*This is Template Hook and Filter the single_template with our custom function*/
 		$this->loader->add_filter('single_template', $plugin_public, 'my_custom_template');
 	}
 
