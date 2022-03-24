@@ -159,15 +159,16 @@ class My_First_Plugin {
 
 		
 		$this->loader->add_action( 'init', $plugin_admin, 'job_post_types');
+		$this->loader->add_action( 'init', $plugin_admin, 'application_post_types');
+
 		// Taxonomy hook
 		$this->loader->add_action( 'init', $plugin_admin, 'job_taxonomy');
 
 		// Meta Boxes Hooks
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'job_details_box');
-		$this->loader->add_action( 'save_post', $plugin_admin,'job_location_box_save' );
-		$this->loader->add_action( 'save_post', $plugin_admin,'job_salary_box_save' );
-		$this->loader->add_action( 'save_post', $plugin_admin,'job_time_box_save' );
-		$this->loader->add_action( 'save_post', $plugin_admin,'job_benefits_box_save' );
+		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'application_details_box');
+		$this->loader->add_action( 'save_post', $plugin_admin,'job_box_save' );
+		$this->loader->add_action( 'save_post', $plugin_admin,'job_application_box_save' );
 	}
 	/**
 	 * Register all of the hooks related to the public-facing functionality
@@ -185,6 +186,9 @@ class My_First_Plugin {
 
 		// add shortcode
 		$this->loader->add_shortcode( 'wp10shortcode1', $plugin_public, 'public_jobs_board' ); //grid 
+
+		/* Filter the single_template with our custom function*/
+		$this->loader->add_filter('single_template', $plugin_public, 'my_custom_template');
 	}
 
 	/**

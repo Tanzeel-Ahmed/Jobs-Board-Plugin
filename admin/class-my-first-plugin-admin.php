@@ -288,7 +288,7 @@ class My_First_Plugin_Admin {
 		}
 		
 				// job location hook function
-			public function job_location_box_save(){
+			public function job_box_save(){
  
 				global $post;
 			 
@@ -297,10 +297,7 @@ class My_First_Plugin_Admin {
 					update_post_meta($post->ID, 'job_location', $_POST["job_location"]);
 				 
 				endif;
-			}
-				// job salary hook function
-			public function job_salary_box_save(){
- 
+
 				global $post;
 			 
 				if(isset($_POST["job_salary"])):
@@ -308,11 +305,7 @@ class My_First_Plugin_Admin {
 					update_post_meta($post->ID, 'job_salary', $_POST["job_salary"]);
 				 
 				endif;
-			}
 
-				// job time hook function
-			public function job_time_box_save(){
- 
 				global $post;
 			 
 				if(isset($_POST["job_time"])):
@@ -320,18 +313,152 @@ class My_First_Plugin_Admin {
 					update_post_meta($post->ID, 'job_time', $_POST["job_time"]);
 				 
 				endif;
-			}
-					// job benefits hook function
-					public function job_benefits_box_save(){
- 
-						global $post;
+
+				global $post;
 					 
 						if(isset($_POST["job_benefits"])):
 							 
 							update_post_meta($post->ID, 'job_benefits', $_POST["job_benefits"]);
 						 
 						endif;
-					}
-	
+			}
 
+
+					public function application_post_types() {
+						$labels = array(
+							'name'                  => _x( 'Applications', 'Jobs Application', $this->plugin_name ),
+							'singular_name'         => _x( 'Application', 'Job Application', $this->plugin_name ),
+							'menu_name'             => _x( 'Jobs Application', 'Admin Menu text', $this->plugin_name ),
+							'name_admin_bar'        => _x( 'Applications', 'Add New on Toolbar', $this->plugin_name ),
+							'all_items'             => __( 'All Applications', $this->plugin_name ),
+							'search_items'          => __( 'Search Application', $this->plugin_name ),
+							
+							
+						);
+					 
+						$args = array(
+							'labels'             => $labels,
+							'public'             => true,
+							'publicly_queryable' => true,
+							'show_ui'            => true,
+							'show_in_menu'       => true,
+							'show_in_rest' 		 => true,
+							'rewrite'            => array( 'slug' => 'applications'),
+							'capability_type'    => 'post',
+							'menu_position'      => null,
+							'menu_icon'			 => 'dashicons-media-text'
+						);
+					 
+						register_post_type( 'applications', $args );
+					}	
+					
+					public function application_details_box() {
+						add_meta_box(
+							'job_application',
+							'Job Application',
+							array($this,'job_application_box_content'),
+							'applications',
+							'normal',
+							'high'
+					   );
+					}
+					// job application callback function
+					public function job_application_box_content(){
+     
+						global $post;
+						 
+						?>
+					 
+						<div class="row">
+							<div class="label">Full Name</div>
+							<div class="fields">
+								<input type="text" name="fullname" placeholder="Enter Full Name" value="<?php echo get_post_meta($post->ID, 'fullname', true)?>"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="label">Emil Address</div>
+							<div class="fields">
+								<input type="text" name="email" placeholder="Enter Email" value="<?php echo get_post_meta($post->ID, 'email', true)?>"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="label">Home Address</div>
+							<div class="fields">
+								<input type="text" name=" address" placeholder="Enter Address" value="<?php echo get_post_meta($post->ID, 'address', true)?>"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="label">Phone Number</div>
+							<div class="fields">
+								<input type="text" name=" phone" placeholder="Enter Phone Number" value="<?php echo get_post_meta($post->ID, 'phone', true)?>"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="label">Date</div>
+							<div class="fields">
+								<input type="text" name=" date" placeholder="Enter Date" value="<?php echo get_post_meta($post->ID, 'date', true)?>"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="label"> Resume</div>
+							<div class="fields">
+								<input type="file" name="file" placeholder="Resume" value="<?php echo get_post_meta($post->ID, 'file', true)?>"/>
+								<button class="btn"><i class="fa fa-download"></i> Download</button>
+							</div>
+							
+						</div>
+					 
+						<?php
+					 
+					}
+				// job location hook function
+				public function job_application_box_save(){
+ 
+				global $post;
+			 
+					if(isset($_POST["fullname"])):
+					 
+				  	    update_post_meta($post->ID, 'fullname', $_POST["fullname"]);
+				 
+						endif;
+						
+						global $post;
+					if(isset($_POST["email"])):
+					 
+					    update_post_meta($post->ID, 'email', $_POST["email"]);
+				 
+						endif;
+
+						global $post;
+					if(isset($_POST["address"])):
+					 
+						update_post_meta($post->ID, 'address', $_POST["address"]);
+					 
+						endif;
+
+						global $post;
+					if(isset($_POST["phone"])):
+					 
+						update_post_meta($post->ID, 'phone', $_POST["phone"]);
+						 
+						endif;
+
+						global $post;
+					if(isset($_POST["date"])):
+					 
+						update_post_meta($post->ID, 'date', $_POST["date"]);
+							 
+						endif;
+					
+						global $post;
+					if(isset($_POST["file"])):
+					 
+						update_post_meta($post->ID, 'file', $_POST["file"]);
+								 
+						endif;	
+					}
+
+					
+
+					
 }

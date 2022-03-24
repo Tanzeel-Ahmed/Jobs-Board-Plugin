@@ -208,7 +208,7 @@ class My_First_Plugin_Public {
 					if ( $the_query->have_posts() ) {
 
 						while ( $the_query->have_posts() ) : $the_query->the_post();?> 
-						<h5><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5><p><?php echo get_post_meta( get_the_ID(), 'job_location', true ); ?></p> 
+						<h5><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5><p>City: <?php echo get_post_meta( get_the_ID(), 'job_location', true ); ?></p> 
 						<?php
 						endwhile;
 
@@ -229,10 +229,24 @@ class My_First_Plugin_Public {
 		   
 				   while($query->have_posts()) {
 					   $query->the_post(); 
-					   ?>   <h5><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5><p><?php echo get_post_meta( get_the_ID(), 'job_location', true ); ?></p> <?php
+					   ?>   <h5><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h5><p>City: <?php echo get_post_meta( get_the_ID(), 'job_location', true ); ?></p> <?php
 					} 
 			}	
 					
 		}
 	
+		function my_custom_template($single) {
+
+			global $post;
+
+			/* Checks for single template by p	ost type */
+			if ( $post->post_type == 'job' ) {
+				if ( file_exists( plugin_dir_path( __FILE__ ) . 'templates/single-job.php' ) ) {
+					return plugin_dir_path( __FILE__ ) . 'templates/single-job.php';
+				}
+			}
+
+			return $single;
+
+		}
 }
