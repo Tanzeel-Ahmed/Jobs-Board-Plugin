@@ -400,7 +400,7 @@ class My_First_Plugin_Admin {
 						<div class="row">
 						<div class="label"> Resume
 							<?php  $uploadedfile = get_post_meta($post->ID, 'file', true)?>
-							<a href="<?php echo $uploadedfile['url']; ?>" download> Download </a>
+							<button class="btn"> <i class="fa fa-download"> <a href="<?php echo $uploadedfile['url']; ?>" download> Download </a></button>
 							</div>
 						</div>
 					 
