@@ -290,31 +290,7 @@ class My_First_Plugin_Admin {
 				// jobs box hook function
 			public function job_box_save(){
  
-				global $post;
-			 
-				if(isset($_POST["job_location"])):
-					 
-					update_post_meta($post->ID, 'job_location', $_POST["job_location"]);
-				 
-				endif;
-			 
-				if(isset($_POST["job_salary"])):
-					 
-					update_post_meta($post->ID, 'job_salary', $_POST["job_salary"]);
-				 
-				endif;
-			 
-				if(isset($_POST["job_time"])):
-					 
-					update_post_meta($post->ID, 'job_time', $_POST["job_time"]);
-				 
-				endif;
-					 
-						if(isset($_POST["job_benefits"])):
-							 
-							update_post_meta($post->ID, 'job_benefits', $_POST["job_benefits"]);
-						 
-						endif;
+				
 			}
 
 					// Register Application custom post type
