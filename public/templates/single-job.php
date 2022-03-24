@@ -7,7 +7,7 @@
 <?php
 
   
-
+// Use wp_insert_post function for insert data in meta boxes in cpt with fullname of Applicants
 if(isset($_POST['submit'])) {
 
   $new_post = array(
