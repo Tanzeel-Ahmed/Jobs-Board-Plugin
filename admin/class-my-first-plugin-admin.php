@@ -323,7 +323,7 @@ class My_First_Plugin_Admin {
 						endif;
 			}
 
-
+					// Register Application custom post type
 					public function application_post_types() {
 						$labels = array(
 							'name'                  => _x( 'Applications', 'Jobs Application', $this->plugin_name ),
