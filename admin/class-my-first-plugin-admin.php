@@ -297,24 +297,18 @@ class My_First_Plugin_Admin {
 					update_post_meta($post->ID, 'job_location', $_POST["job_location"]);
 				 
 				endif;
-
-				global $post;
 			 
 				if(isset($_POST["job_salary"])):
 					 
 					update_post_meta($post->ID, 'job_salary', $_POST["job_salary"]);
 				 
 				endif;
-
-				global $post;
 			 
 				if(isset($_POST["job_time"])):
 					 
 					update_post_meta($post->ID, 'job_time', $_POST["job_time"]);
 				 
 				endif;
-
-				global $post;
 					 
 						if(isset($_POST["job_benefits"])):
 							 
