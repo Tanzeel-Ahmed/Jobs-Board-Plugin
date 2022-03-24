@@ -287,7 +287,7 @@ class My_First_Plugin_Admin {
 		 
 		}
 		
-				// job location hook function
+				// jobs box hook function
 			public function job_box_save(){
  
 				global $post;
