@@ -362,6 +362,10 @@ class My_First_Plugin_Admin {
 							'high'
 					   );
 					}
+
+					/* Create Meta Boxes in Application Custom post type.
+					 * Get data from Apllication Form from Front end/single page template */ 
+
 					// job application callback function
 					public function job_application_box_content(){
      
@@ -411,7 +415,7 @@ class My_First_Plugin_Admin {
 						<?php
 					 
 					}
-				// job location hook function
+				// job Application hook function
 				public function job_application_box_save(){
  
 				global $post;
