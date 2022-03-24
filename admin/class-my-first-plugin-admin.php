@@ -368,7 +368,7 @@ class My_First_Plugin_Admin {
 
 					// job application callback function
 					public function job_application_box_content(){
-     
+					
 						global $post;
 						 
 						?>
@@ -404,12 +404,10 @@ class My_First_Plugin_Admin {
 							</div>
 						</div>
 						<div class="row">
-							<div class="label"> Resume</div>
-							<div class="fields">
-								<input type="file" name="file" placeholder="Resume" value="<?php echo get_post_meta($post->ID, 'file', true)?>"/>
-								<button class="btn"><i class="fa fa-download"></i> Download</button>
+						<div class="label"> Resume
+							<?php  $uploadedfile = get_post_meta($post->ID, 'file', true)?>
+							<a href="<?php echo $uploadedfile['url']; ?>" download> Download </a>
 							</div>
-							
 						</div>
 					 
 						<?php

@@ -30,11 +30,22 @@ if(isset($_POST['submit'])) {
 
         update_post_meta($post_id, 'date', $_POST["date"]);
 
-        update_post_meta($post_id, 'file', $_POST["file"]);
     
-        
+       
+        // update post meta of Resume field
+          if(!empty($_FILES['file']['name'])) {
+            
+            $file_type = wp_check_filetype(basename($_FILES['file']['name']));
+            $uploaded_type = $file_type['type'];
 
-    }	  
+              $upload =wp_upload_bits($_FILES['file']['name'], null, file_get_contents($_FILES['file']['tmp_name']));
+
+              update_post_meta($post_id, 'file', $upload);
+            }
+            
+          }
+        
+    	  
             
 
 ?>
@@ -73,7 +84,7 @@ if(isset($_POST['submit'])) {
       </div>
       <div class="form-group mt-3">
         <label class="mr-4"  >Upload your Resume:</label>
-        <input type="file" name="file" id="filetoupload" >
+        <input type="file" name="file" id="filetoupload" required>
       </div><br>
       <button type="submit" name="submit" class="btn btn-primary">Submit</button>
     </form>
