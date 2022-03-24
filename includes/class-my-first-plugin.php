@@ -168,6 +168,8 @@ class My_First_Plugin {
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'job_details_box');
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'application_details_box');
 		$this->loader->add_action( 'save_post', $plugin_admin,'job_box_save' );
+
+		//job application hook 
 		$this->loader->add_action( 'save_post', $plugin_admin,'job_application_box_save' );
 	}
 	/**
