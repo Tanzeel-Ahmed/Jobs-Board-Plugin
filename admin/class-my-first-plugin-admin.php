@@ -345,7 +345,41 @@ class My_First_Plugin_Admin {
 					 
 						register_post_type( 'applications', $args );
 					}	
-					
+					// Register Appliaction Taxonomy
+					public function application_taxonomy() {
+
+						$labels = array(
+							'name'              => _x( 'Applications Status','taxonomy general name', $this->plugin_name ),
+							'singular_name'     => _x( 'Application Status', 'taxonomy singular name', $this->plugin_name ),
+							'search_items'      => __( 'Search Applications Status', $this->plugin_name ),
+							'all_items'         => __( 'All Applications Status', $this->plugin_name ),
+							'view_item'         => __( 'View Application Status', $this->plugin_name ),
+							'parent_item'       => __( 'Parent Application Status', $this->plugin_name ),
+							'parent_item_colon' => __( 'Parent Application Status:', $this->plugin_name ),
+							'edit_item'         => __( 'Edit Application Status', $this->plugin_name ),
+							'update_item'       => __( 'Update Application Status', $this->plugin_name ),
+							'add_new_item'      => __( 'Add New Application Status', $this->plugin_name ),
+							'new_item_name'     => __( 'New Application Name Status', $this->plugin_name ),
+							'not_found'         => __( 'No Applications Found Status', $this->plugin_name ),
+							'back_to_items'     => __( 'Back to Applications Status', $this->plugin_name ),
+							'menu_name'         => __( 'Application  Status', $this->plugin_name ),
+						);
+					 
+						$args = array(
+							'labels'            => $labels,
+							'hierarchical'      => true,
+							'public'            => true,
+							'show_ui'           => true,
+							'show_admin_column' => true,
+							'query_var'         => true,
+							'rewrite'           => array( 'slug' => 'application-status' ),
+							'show_in_rest'      => true,
+						);
+			
+						register_taxonomy( 'appliaction_status', 'applications', $args);
+			
+					}
+
 					public function application_details_box() {
 						add_meta_box(
 							'job_application',

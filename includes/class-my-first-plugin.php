@@ -163,7 +163,8 @@ class My_First_Plugin {
 
 		// Taxonomy hook
 		$this->loader->add_action( 'init', $plugin_admin, 'job_taxonomy');
-
+		$this->loader->add_action( 'init', $plugin_admin, 'application_taxonomy');
+		
 		// Meta Boxes Hooks
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'job_details_box');
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'application_details_box');
