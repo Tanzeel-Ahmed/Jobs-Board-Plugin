@@ -354,15 +354,13 @@ class My_First_Plugin_Admin {
 							'search_items'      => __( 'Search Applications Status', $this->plugin_name ),
 							'all_items'         => __( 'All Applications Status', $this->plugin_name ),
 							'view_item'         => __( 'View Application Status', $this->plugin_name ),
-							'parent_item'       => __( 'Parent Application Status', $this->plugin_name ),
-							'parent_item_colon' => __( 'Parent Application Status:', $this->plugin_name ),
 							'edit_item'         => __( 'Edit Application Status', $this->plugin_name ),
 							'update_item'       => __( 'Update Application Status', $this->plugin_name ),
 							'add_new_item'      => __( 'Add New Application Status', $this->plugin_name ),
 							'new_item_name'     => __( 'New Application Name Status', $this->plugin_name ),
 							'not_found'         => __( 'No Applications Found Status', $this->plugin_name ),
 							'back_to_items'     => __( 'Back to Applications Status', $this->plugin_name ),
-							'menu_name'         => __( 'Application  Status', $this->plugin_name ),
+							'menu_name'         => __( 'Application Status', $this->plugin_name ),
 						);
 					 
 						$args = array(
