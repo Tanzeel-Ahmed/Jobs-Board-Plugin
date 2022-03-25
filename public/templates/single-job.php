@@ -15,11 +15,14 @@ if(isset($_POST['submit'])) {
         'post_type' => 'applications', // Custom Post Type Slug
         'post_status' => 'publish',
         'post_title' => $_POST['fullname'],
+        'job_title' => get_the_title()
       );
   
       $post_id= wp_insert_post($new_post);
   
    
+        update_post_meta($post_id,'job_title', get_the_title());
+        
         update_post_meta($post_id, 'fullname', $_POST["fullname"]);
        
         update_post_meta($post_id, 'email', $_POST["email"]);
