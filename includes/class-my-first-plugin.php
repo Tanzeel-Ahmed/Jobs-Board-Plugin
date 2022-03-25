@@ -161,9 +161,13 @@ class My_First_Plugin {
 		$this->loader->add_action( 'init', $plugin_admin, 'job_post_types');
 		$this->loader->add_action( 'init', $plugin_admin, 'application_post_types');
 
-		// Taxonomy hook
+		// Taxonomy hooks
 		$this->loader->add_action( 'init', $plugin_admin, 'job_taxonomy');
 		$this->loader->add_action( 'init', $plugin_admin, 'application_taxonomy');
+		
+		// Application column hooks
+		$this->loader->add_filter( 'manage_edit-applications_columns', $plugin_admin, 'application_columns');
+		$this->loader->add_action( 'manage_applications_posts_custom_column', $plugin_admin, 'manage_application_columns', 10, 2);
 		
 		// Meta Boxes Hooks
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'job_details_box');

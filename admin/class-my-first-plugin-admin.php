@@ -378,6 +378,59 @@ class My_First_Plugin_Admin {
 			
 					}
 
+					public function application_columns( $columns ) {
+
+						$columns = array(
+							'cb' => '&lt;input type="checkbox" />',
+							'title' => __( 'Applicants Name' ),
+							'job_title' => __( 'Job Title' ),
+							'appliaction_status' => __( 'Applications Status' ),
+							'date' => __( 'Date' )
+							
+						);
+					
+						return $columns;
+					}
+
+					public function manage_application_columns( $column, $post_id ) {
+
+						switch( $column ) {
+
+						// displaying the job title column.
+						case 'job_title' :
+
+						//  Get the post meta.
+						echo get_post_meta($post_id, 'job_title', true);
+						
+						break;
+						
+						// displaying the applicaton status column.
+						case 'appliaction_status' :
+
+						// Get the  applicaton status for the post.
+						$terms = get_the_terms( $post_id, 'appliaction_status', true );
+						
+						// If terms were found.
+						if ( !empty( $terms ) ) {
+
+						foreach ( $terms as $term ):
+							
+							echo $term->name;
+
+						endforeach;
+						} else {
+							echo ( 'No Status ' );
+						}
+						break;
+
+						// Just break out of the switch statement for everything else.
+						default :
+						break;
+
+						}
+
+					}
+
 					public function application_details_box() {
 						add_meta_box(
 							'job_application',
