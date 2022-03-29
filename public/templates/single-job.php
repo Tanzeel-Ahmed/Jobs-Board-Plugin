@@ -86,7 +86,7 @@ if(isset($_POST['submit'])) {
         </div>
       </div>
       <div class="form-group mt-3">
-        <label class="mr-4"  >Upload your Resume:</label>
+        <label class="mr-4"  >Upload your Resume: (only pdf and doc files uploaded)</label>
         <input type="file" name="file" id="filetoupload" accept=".pdf,.doc" required>
       </div><br>
       <button type="submit" name="submit" class="btn btn-primary">Submit</button>
