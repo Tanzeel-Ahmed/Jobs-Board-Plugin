@@ -168,6 +168,8 @@ class My_First_Plugin {
 		// Application column hooks
 		$this->loader->add_filter( 'manage_edit-applications_columns', $plugin_admin, 'application_columns');
 		$this->loader->add_action( 'manage_applications_posts_custom_column', $plugin_admin, 'manage_application_columns', 10, 2);
+
+		$this->loader->add_filter( 'wp_insert_post_data', $plugin_admin, 'change_application_status', 10, 3);
 		
 		// Meta Boxes Hooks
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'job_details_box');

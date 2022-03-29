@@ -374,62 +374,11 @@ class My_First_Plugin_Admin {
 							'show_in_rest'      => true,
 						);
 			
-						register_taxonomy( 'appliaction_status', 'applications', $args);
+						register_taxonomy( 'application_status', 'applications', $args);
 			
 					}
 
-					public function application_columns( $columns ) {
-
-						$columns = array(
-							'cb' => '&lt;input type="checkbox" />',
-							'title' => __( 'Applicants Name' ),
-							'job_title' => __( 'Job Title' ),
-							'appliaction_status' => __( 'Applications Status' ),
-							'date' => __( 'Date' )
-							
-						);
 					
-						return $columns;
-					}
-
-					public function manage_application_columns( $column, $post_id ) {
-
-						switch( $column ) {
-
-						// displaying the job title column.
-						case 'job_title' :
-
-						//  Get the post meta.
-						echo get_post_meta($post_id, 'job_title', true);
-						
-						break;
-						
-						// displaying the applicaton status column.
-						case 'appliaction_status' :
-
-						// Get the  applicaton status for the post.
-						$terms = get_the_terms( $post_id, 'appliaction_status', true );
-						
-						// If terms were found.
-						if ( !empty( $terms ) ) {
-
-						foreach ( $terms as $term ):
-							
-							echo $term->name;
-
-						endforeach;
-						} else {
-							echo ( 'No Status ' );
-						}
-						break;
-
-						// Just break out of the switch statement for everything else.
-						default :
-						break;
-
-						}
-
-					}
 
 					public function application_details_box() {
 						add_meta_box(
@@ -540,6 +489,102 @@ class My_First_Plugin_Admin {
 					}
 
 					
+					public function application_columns( $columns ) {
 
+						$columns = array(
+							'cb' => '&lt;input type="checkbox" />',
+							'title' => __( 'Applicants Name' ),
+							'job_title' => __( 'Job Title' ),
+							'application_status' => __( 'Applications Status' ),
+							'date' => __( 'Date' )
+							
+						);
+					
+						return $columns;
+					}
+
+					public function manage_application_columns( $column, $post_id ) {
+
+						switch( $column ) {
+
+						// displaying the job title column.
+						case 'job_title' :
+
+						//  Get the post meta.
+						echo get_post_meta($post_id, 'job_title', true);
+						
+						break;
+						
+						// displaying the applicaton status column.
+						case 'application_status' :
+
+						// Get the  applicaton status for the post.
+						$terms = get_the_terms( $post_id, 'application_status', true );
+						
+						// If terms were found.
+						if ( !empty( $terms ) ) {
+
+						foreach ( $terms as $term ):
+							
+							echo $term->name;
+
+						endforeach;
+						} else {
+							echo ( 'No Status' );
+						}
+						break;
+
+						// Just break out of the switch statement for everything else.
+						default :
+						break;
+
+						}
+
+					}
+
+
+					function change_application_status( $data, $postarr, $unsanitized_postarr){
+						$post_type = $data['post_type'];
+						
+						$my_post_id = $postarr['ID'];
+						
+						$new_status_id = $postarr['tax_input']['application_status'][1]; 
+						$new_status_term = get_term($new_status_id);
+						$new_status_name = $new_status_term->name;
+						
+						
+						$applicant_post_id = $data['post_author'];
+						$applicant_email= get_post_meta($my_post_id, 'email', true);
+					
+						$taxonomies =  wp_get_object_terms( $my_post_id, 'application_status'); 
+						$old_status_id = '';
+						
+
+						foreach ( $taxonomies as $taxonomy ) {
+							$old_status_id=$taxonomy->taxonomy_id;
+						}
+						if($old_status_id!=$new_status_id){
+
+							if($new_status_name == 'Approved'){
+							$subject = 'Your Application Status';
+							$message = 'Your Application has been Approved';
+							$send_mail=wp_mail( $applicant_email, $subject, $message );
+							echo $send_mail;
+							}
+							else if($new_status_name == 'Pending'){
+							$subject = 'Your Application Status';
+							$message = 'Your Application is Pending';
+							$send_mail=wp_mail( $applicant_email, $subject, $message );
+							echo $send_mail;
+							} 
+							else if($new_status_name == 'Rejected'){
+							$subject = 'Your Application Status';
+							$message = 'Your Application has been Rejected';
+							$send_mail=wp_mail( $applicant_email, $subject, $message );
+							echo $send_mail;
+							}
+						}
+						return $data;
+					}
 					
 }
