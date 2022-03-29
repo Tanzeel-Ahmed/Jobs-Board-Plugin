@@ -133,7 +133,7 @@ class My_First_Plugin_Admin {
 				'has_archive'        => true,
 				'hierarchical'       => false,
 				'menu_position'      => null,
-				'supports'           => array( 'title', 'editor', 'author', 'thumbnail'),
+				'supports'           => array( 'title', 'author'),
 				'menu_icon'			 => 'dashicons-shield-alt'
 			);
 		 
