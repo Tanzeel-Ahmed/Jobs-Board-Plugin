@@ -177,43 +177,16 @@ class My_First_Plugin_Admin {
 		public function job_details_box() {
 
 			add_meta_box(
-		         'job_location',
-		         'Job Location',
-		         array($this,'job_location_box_content'),
+		         'job_details',
+		         'Job Details',
+		         array($this,'job_detail_box_content'),
 		         'job',
 		         'normal',
 		         'high'
 			);
-
-			add_meta_box(
-				'job_salary',
-				'Job Salary',
-				array($this,'job_salary_box_content'),
-				'job',
-				'normal',
-				'default'
-		   );
-
-		   add_meta_box(
-			'employment_time',
-			'Employment Time',
-			array($this,'job_time_box_content'),
-			'job',
-			'normal',
-			'default'
-	    	);
-
-			add_meta_box(
-				'job_benefits',
-				'Job Benefits',
-				array($this,'job_benefits_box_content'),
-				'job',
-				'normal',
-				'default'
-				);
 		}
-		// Job Location callback function
-		public function job_location_box_content(){
+		// Job Detail callback function
+		public function job_detail_box_content(){
      
 			global $post;
 			 
@@ -226,67 +199,30 @@ class My_First_Plugin_Admin {
 				</div>
 			</div>
 		 
-			<?php
-		 
-		}
-
-
-		// Job Salary callback funtion
-		public function job_salary_box_content(){
-     
-			global $post;
-			 
-			?>
-		 
 			<div class="row">
 				<div class="label">Salary Range</div>
 				<div class="slidecontainer">
   				<input type="range" name="job_salary" min="1" max="100" class="slider" id="myRange" value="<?php echo get_post_meta($post->ID, 'job_salary', true)?>">
 			</div>
 			</div>
-		 
-			<?php
-		 
-		}
 
-
-		// Job`s Timing callback function
-		public function job_time_box_content(){
-     
-			global $post;
-			 
-			?>
-		 
 			<div class="row">
 				<div class="label">Employment Time</div>
 				<div class="fields">
 					<input type="text" name="job_time"  placeholder="Enter Job`s Timing" value="<?php echo get_post_meta($post->ID, 'job_time', true)?>"/>
 				</div>
 			</div>
-		 
-			<?php
-		 
-		}
 
-
-		// Job`s Benefit callback function
-		public function job_benefits_box_content(){
-     
-			global $post;
-			 
-			?>
-		 
 			<div class="row">
 				<div class="label">Job Benefits</div>
 				<div class="fields">
 					<input type="text" name="job_benefits"  placeholder="Enter Job`s Benefits" value="<?php echo get_post_meta($post->ID, 'job_benefits', true)?>"/>
 				</div>
 			</div>
-		 
+
 			<?php
 		 
-		}
-		
+			}
 				// jobs box hook function
 			public function job_box_save(){
  
