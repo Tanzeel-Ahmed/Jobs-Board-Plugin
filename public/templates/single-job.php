@@ -56,11 +56,25 @@ if(isset($_POST['submit'])) {
 
 
 <html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+      $(document).ready(function(){
+            $('#form').submit(function(){
+                alert('submit SuccessFully');
+                event.preventDefault();
+            });
+        });
+        
+    </script> 
+
+
+</head>
 <body>
   <div class="col-md-6 offset-md-3 mt-5">
     <br>
     <h1><center>Job Application Form</center></h1>
-    <form accept-charset="UTF-8" action="" method="POST" enctype="multipart/form-data">
+    <form accept-charset="UTF-8" id="form" action="" method="POST" enctype="multipart/form-data">
       <div class="form-group">
         <label for="exampleInputName">Full Name</label>
         <input type="text" name="fullname" class="form-control" id="fullname" placeholder="Enter your name and surname " required>
@@ -89,7 +103,7 @@ if(isset($_POST['submit'])) {
         <label class="mr-4"  >Upload your Resume: (only pdf and doc files uploaded)</label>
         <input type="file" name="file" id="filetoupload" accept=".pdf,.doc" required>
       </div><br>
-      <button type="submit" name="submit" class="btn btn-primary">Submit</button>
+      <input type="submit" name="submit" class="btn btn-primary" value="submit">
     </form>
   </div>
 </body>
