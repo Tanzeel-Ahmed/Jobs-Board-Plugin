@@ -522,5 +522,9 @@ class My_First_Plugin_Admin {
 						}
 						return $data;
 					}
-					
+			
+					public function ajax_application_form(){
+						
+					}
+
 }

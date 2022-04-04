@@ -8,7 +8,7 @@
 
   
 // Use wp_insert_post function for insert data in meta boxes in cpt with fullname of Applicants
-if(isset($_POST['submit'])) {
+/*if(isset($_POST['submit'])) {
 
   $new_post = array(
         
@@ -46,7 +46,7 @@ if(isset($_POST['submit'])) {
               update_post_meta($post_id, 'file', $upload);
             }
             
-          }
+          }*/
         
     	  
             
@@ -57,14 +57,27 @@ if(isset($_POST['submit'])) {
 
 <html>
 <head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 <script>
       $(document).ready(function(){
-            $('#form').submit(function(){
-                alert('submit SuccessFully');
-                event.preventDefault();
+            $("#submit").click(function(){
+              
+                $.ajax({
+                  type: "POST",
+                  url: "/wp-admin/admin-ajax.php",
+                  data: $('#form').serialize(),
+                  cache: false,
+                  action: 'application_form',
+                  success: function(data){
+                  console.log(data);
+                  }
             });
+            event.preventDefault();
+            alert('submit Successfully');
         });
+      });
         
     </script> 
 
@@ -103,7 +116,7 @@ if(isset($_POST['submit'])) {
         <label class="mr-4"  >Upload your Resume: (only pdf and doc files uploaded)</label>
         <input type="file" name="file" id="filetoupload" accept=".pdf,.doc" required>
       </div><br>
-      <input type="submit" name="submit" class="btn btn-primary" value="submit">
+      <input type="submit" name="submit" class="btn btn-primary" id="submit" value="submit">
     </form>
   </div>
 </body>
