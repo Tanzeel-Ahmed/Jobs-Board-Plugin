@@ -8,7 +8,7 @@
 
   
 // Use wp_insert_post function for insert data in meta boxes in cpt with fullname of Applicants
-/*if(isset($_POST['submit'])) {
+if(isset($_POST['submit'])) {
 
   $new_post = array(
         
@@ -46,7 +46,7 @@
               update_post_meta($post_id, 'file', $upload);
             }
             
-          }*/
+          }
         
     	  
             
@@ -57,29 +57,31 @@
 
 <html>
 <head>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-<script>
-      $(document).ready(function(){
-            $("#submit").click(function(){
-              
-                $.ajax({
-                  type: "POST",
-                  url: "/wp-admin/admin-ajax.php",
-                  data: $('#form').serialize(),
-                  cache: false,
-                  action: 'application_form',
-                  success: function(data){
-                  console.log(data);
-                  }
-            });
-            event.preventDefault();
-            alert('submit Successfully');
-        });
-      });
+
+<script> 
         
-    </script> 
+        jQuery(document).ready(function($) { 
+            
+            $('#form').ajaxForm({
+                 
+                 success: function(response){
+                  console.log(response);
+                  event.preventDefault();
+                  alert('Submit Successfully');
+                 },
+                 error: function(response){
+                  console.log(response);
+                 },
+                 uploadProgress(event, position, total, percentComplete){
+                  console.log(percentComplete);
+                 },
+                 resetForm: true
+            }); 
+           
+            
+        }); 
+    </script>
 
 
 </head>
@@ -87,7 +89,7 @@
   <div class="col-md-6 offset-md-3 mt-5">
     <br>
     <h1><center>Job Application Form</center></h1>
-    <form accept-charset="UTF-8" id="form" action="" method="POST" enctype="multipart/form-data">
+    <form accept-charset="UTF-8" id="form" action="<?php echo admin_url('admin-ajax.php'); ?>" method="POST" enctype="multipart/form-data">
       <div class="form-group">
         <label for="exampleInputName">Full Name</label>
         <input type="text" name="fullname" class="form-control" id="fullname" placeholder="Enter your name and surname " required>
@@ -116,6 +118,7 @@
         <label class="mr-4"  >Upload your Resume: (only pdf and doc files uploaded)</label>
         <input type="file" name="file" id="filetoupload" accept=".pdf,.doc" required>
       </div><br>
+      <input type="hidden" name="action" value="application_form">
       <input type="submit" name="submit" class="btn btn-primary" id="submit" value="submit">
     </form>
   </div>

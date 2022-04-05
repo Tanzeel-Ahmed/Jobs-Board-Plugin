@@ -97,6 +97,7 @@ class My_First_Plugin_Public {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/my-first-plugin-public.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script('jquery-form');
 
 	}
 	// Our First jobs board Shortcode

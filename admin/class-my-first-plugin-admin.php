@@ -524,7 +524,7 @@ class My_First_Plugin_Admin {
 					}
 			
 					public function ajax_application_form(){
-						
+						wp_send_json_success(array('POST'=> $_POST, 'FILES'=> $_FILES));
 					}
 
 }
