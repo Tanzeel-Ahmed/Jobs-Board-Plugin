@@ -276,6 +276,7 @@ class My_First_Plugin_Admin {
 							'rewrite'            => array( 'slug' => 'applications'),
 							'capability_type'    => 'post',
 							'menu_position'      => null,
+							'supports'           => array('title'),
 							'menu_icon'			 => 'dashicons-media-text'
 						);
 					 
