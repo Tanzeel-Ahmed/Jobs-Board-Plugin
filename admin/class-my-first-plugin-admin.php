@@ -524,7 +524,35 @@ class My_First_Plugin_Admin {
 					}
 			
 					public function ajax_application_form(){
-						wp_send_json_success(array('POST'=> $_POST, 'FILES'=> $_FILES));
+					
+						$new_post = array(
+							'post_type'         => 'applications',
+							'post_status'       => 'publish',
+							'post_title'        => $_POST['fullname']
+						);
+					
+						$post_id = wp_insert_post($new_post);
+					
+						// check if there is a post id and use it to add custom meta
+						if ($post_id) {
+							update_post_meta($post_id, 'job_title', $_POST['job_title']);
+							update_post_meta($post_id, 'fullname', $_POST["fullname"]);
+							update_post_meta($post_id, 'email', $_POST['email']);
+							update_post_meta($post_id, 'address', $_POST["address"]);
+							update_post_meta($post_id, 'phone', $_POST['phone']);
+							update_post_meta($post_id, 'date', $_POST['date']);
+
+							if(!empty($_FILES['file']['name'])) {
+            
+								$file_type = wp_check_filetype(basename($_FILES['file']['name']));
+								$uploaded_type = $file_type['type'];
+					
+								  $upload =wp_upload_bits($_FILES['file']['name'], null, file_get_contents($_FILES['file']['tmp_name']));
+					
+								  update_post_meta($post_id, 'file', $upload);
+								}
+						}
+					
 					}
 
 }

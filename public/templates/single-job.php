@@ -90,7 +90,8 @@ if(isset($_POST['submit'])) {
     <br>
     <h1><center>Job Application Form</center></h1>
     <form accept-charset="UTF-8" id="form" action="<?php echo admin_url('admin-ajax.php'); ?>" method="POST" enctype="multipart/form-data">
-      <div class="form-group">
+    <input type="hidden" name="job_title" value="<?php echo get_the_title( ); ?>">
+    <div class="form-group">
         <label for="exampleInputName">Full Name</label>
         <input type="text" name="fullname" class="form-control" id="fullname" placeholder="Enter your name and surname " required>
       </div>

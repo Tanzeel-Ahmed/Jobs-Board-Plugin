@@ -179,6 +179,7 @@ class My_First_Plugin {
 		//job application hook 
 		$this->loader->add_action( 'save_post', $plugin_admin,'job_application_box_save' );
 
+		// Hook for Ajax Application Form
 		$this->loader->add_action( 'wp_ajax_application_form', $plugin_admin,'ajax_application_form' );
 		$this->loader->add_action( 'wp_ajax_nopriv_application_form', $plugin_admin,'ajax_application_form' );
 		
