@@ -4,57 +4,6 @@
 
 ?>
 
-<?php
-
-  
-// Use wp_insert_post function for insert data in meta boxes in cpt with fullname of Applicants
-if(isset($_POST['submit'])) {
-
-  $new_post = array(
-        
-        'post_type' => 'applications', // Custom Post Type Slug
-        'post_status' => 'publish',
-        'post_title' => $_POST['fullname'],
-        'job_title' => get_the_title()
-      );
-  
-      $post_id= wp_insert_post($new_post);
-  
-   
-        update_post_meta($post_id,'job_title', get_the_title());
-        
-        update_post_meta($post_id, 'fullname', $_POST["fullname"]);
-       
-        update_post_meta($post_id, 'email', $_POST["email"]);
-
-        update_post_meta($post_id, 'address', $_POST["address"]);
-
-        update_post_meta($post_id, 'phone', $_POST["phone"]);
-
-        update_post_meta($post_id, 'date', $_POST["date"]);
-
-    
-       
-        // update post meta of Resume field
-          if(!empty($_FILES['file']['name'])) {
-            
-            $file_type = wp_check_filetype(basename($_FILES['file']['name']));
-            $uploaded_type = $file_type['type'];
-
-              $upload =wp_upload_bits($_FILES['file']['name'], null, file_get_contents($_FILES['file']['tmp_name']));
-
-              update_post_meta($post_id, 'file', $upload);
-            }
-            
-          }
-        
-    	  
-            
-
-?>
-
-
-
 <html>
 <head>
 
