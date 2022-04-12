@@ -183,6 +183,9 @@ class My_First_Plugin {
 		$this->loader->add_action( 'wp_ajax_application_form', $plugin_admin,'ajax_application_form' );
 		$this->loader->add_action( 'wp_ajax_nopriv_application_form', $plugin_admin,'ajax_application_form' );
 		
+		// hook for plugin settings page
+		$this->loader->add_action( 'admin_menu', $plugin_admin,'jobs_Board_Settings_page' );
+		$this->loader->add_action( 'admin_init', $plugin_admin,'my_jobs_settings' );
 	}
 	/**
 	 * Register all of the hooks related to the public-facing functionality
