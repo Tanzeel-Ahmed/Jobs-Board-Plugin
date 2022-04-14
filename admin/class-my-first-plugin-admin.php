@@ -558,61 +558,51 @@ class My_First_Plugin_Admin {
 
 
 					public function jobs_board_settings_page() {
-						
+						$parent_slug = 'edit.php?post_type=job';
 						$page_title = 'Job Board Settings';
-						$menu_title = 'Jobs Setting';
+						$menu_title = 'Job Settings';
 						$capability = 'manage_options';
 						$slug = 'jobs-setting-page';
-						$callback = array( $this, 'plugin_settings_page_content' );
-						$icon ='dashicons-admin-settings';
-						$position = 40;
-					
-						add_menu_page($page_title,$menu_title,$capability,$slug, $callback,$icon,$position);
+						$callback = array( $this, 'jobs_board_settings_page_content' );
+						
+						add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $slug, $callback);
 
 						
 					}
 
-					public function plugin_settings_page_content() {
+					public function jobs_board_settings_page_content() {
 						?>
-					<h1> <?php esc_html_e( get_admin_page_title() ); ?> </h1>
-					<form method="POST" action="options.php">
+					<h1> <?php esc_html_e('Welcome to Jobs Board Settings page.', 'my-plugin-textdomain'); ?> </h1>
+
+					<label for="my_setting_field"><?php _e( 'Please Select File (only csv files)', 'my-textdomain' ); ?></label>
+						<input type="file" id="my_setting_field" name="my_setting_field" accept=".csv" value="<?php echo get_option( 'jobs_setting_field' ); ?>">
+						<button name="Import" class="btn btn-primary" id="import" value="Import">Import</button>
+						
+						<script> 
+        
+							jQuery(document).ready(function() { 
+								
+								jQuery('#import').click(function(){
+									
+									var data = {
+										'action': 'import_jobs',
+									};
+									jQuery.post(
+										ajaxurl, 
+										data, 
+										function(response) {
+										console.log(response);
+										alert('Impost Successfully ');
+									});
+								}); 
+							}); 
+						</script>
 					<?php
-					settings_fields( 'jobs-setting-page' );
-					do_settings_sections( 'jobs-setting-page' );
-					submit_button('Save Settings');
-					?>
-					</form>
-					<?php
 					}
 
-					public function my_jobs_settings() {
+					function import_jobs(){
 
-						register_setting('jobs-setting-page', 'jobs_setting_field');
+						echo('this');
 
-						add_settings_section(
-							'jobs_board_setting_section',
-							__( 'Jobs settings section', 'my-textdomain' ),
-							array( $this, 'my_jobs_settings_section'),
-							'jobs-setting-page'
-						);
-					
-							add_settings_field(
-							   'my_setting_field',
-							   __( 'Upload New Jobs ', 'my-textdomain' ),
-							   array( $this, 'my_jobs_settings_markup'),
-							   'jobs-setting-page',
-							   'jobs_board_setting_section'
-							);
-					}
-					public function my_jobs_settings_section() {
-						echo '<p>Jobs Settings Page</p>';
-					}
-					
-					public function my_jobs_settings_markup() {
-						$options = get_option( 'jobs_setting_field' );
-						?>
-						<label for="my_setting_field"><?php _e( 'Upload', 'my-textdomain' ); ?></label>
-						<input type="file" id="my_setting_field" name="my_setting_field" accept=".csv" value="<?php echo $options ?>">
-						<?php
-					}
+						}
 }
