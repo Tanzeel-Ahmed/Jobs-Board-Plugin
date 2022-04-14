@@ -592,7 +592,7 @@ class My_First_Plugin_Admin {
 										data, 
 										function(response) {
 										console.log(response);
-										alert('Impost Successfully ');
+										alert('Import Successfully ');
 									});
 								}); 
 							}); 
