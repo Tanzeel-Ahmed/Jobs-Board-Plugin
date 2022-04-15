@@ -605,4 +605,75 @@ class My_First_Plugin_Admin {
 						echo('this');
 
 						}
+
+						public function application_settings_page() {
+							$parent_slug = 'edit.php?post_type=applications';
+							$page_title = 'Application Settings';
+							$menu_title = 'Application Settings';
+							$capability = 'manage_options';
+							$slug = 'application-settings-page';
+							$callback = array( $this, 'application_settings_page_content' );
+							
+							add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $slug, $callback);
+	
+							
+						}
+						
+						public function application_settings_page_content() {
+							?>
+						<center>
+						<h1> <?php esc_html_e('Welcome to Application Settings page', 'my-plugin-textdomain'); ?> </h1></br>
+							
+						<h3><?php esc_html_e( 'Export Application Forms', 'my-plugin-textdomain' ); ?></h3>
+						<button name="export_all_posts" id="application-export-button" class="button button-primary">Export</button>
+						</center>
+							<?php
+						}
+
+						function export_all_posts() {
+							
+							$upload = wp_upload_dir();
+							$path 		   = wp_upload_dir();
+							$filename 	   = "/applicatoin-export.csv";
+							$filename	   =  $path['path'].$filename;
+							$file 		   = fopen( $filename, 'a');
+							
+						$header = array('Post Title', 'Job Title', 'Application Status');
+							fputcsv( $file, $header );
+
+								$arg = array(
+									'post_type' => 'applications',
+									'post_status' => 'publish',
+									'posts_per_page' => -1,
+								);
+						  
+								global $post;
+								$arr_post = get_posts($arg);
+								if ($arr_post) {
+									foreach ($arr_post as $post) {
+										setup_postdata($post);
+										  
+										$categories = get_the_category();
+										$cats = array();
+										if (!empty($categories)) {
+											foreach ( $categories as $category ) {
+												$cats[] = $category->name;
+											}
+										}
+						  
+										fputcsv($file, array(get_the_title(), get_the_title(), $cats));
+
+									}
+									
+								
+								}
+								$filename 	   = "/applicatoin-export.csv";
+								$fileUrl	   =  $path['url'].$filename;
+								wp_send_json($fileUrl);
+								die();
+						}
 }
+
+
+
+
