@@ -573,10 +573,11 @@ class My_First_Plugin_Admin {
 					public function jobs_board_settings_page_content() {
 						?>
 					<h1> <?php esc_html_e('Welcome to Jobs Board Settings page.', 'my-plugin-textdomain'); ?> </h1>
-
+					<strong>
 					<label for="my_setting_field"><?php _e( 'Please Select File (only csv files)', 'my-textdomain' ); ?></label>
+					</strong>
 						<input type="file" id="my_setting_field" name="my_setting_field" accept=".csv" value="<?php echo get_option( 'jobs_setting_field' ); ?>">
-						<button name="Import" class="btn btn-primary" id="import" value="Import">Import</button>
+						<button name="submit" class="btn btn-primary" id="import" value="Import">Import</button>
 						
 						<script> 
         
@@ -601,11 +602,39 @@ class My_First_Plugin_Admin {
 					}
 
 					function import_jobs(){
+						
+						// Import CSV
+						if(isset($_POST['submit'])){
 
-						echo('this');
+							 // File extension
+  							$extension = pathinfo($_FILES['my_setting_field']['name'], PATHINFO_EXTENSION);
 
+							if (!empty($_FILES['my_setting_field']['name'])  && $extension == 'csv') {
+							// Setup settings variables
+							$filename = $_FILES['my_setting_field']['tmp_name'] ;
+							// Open file in read mode
+							$file_handle = fopen($filename,'r');
+							// Skip the first line
+							fgetcsv($file_handle);  
+
+										// Parse data from CSV file line by line
+										while(($line = fgetcsv($file_handle)) !== FALSE){
+										 
+										// Get row data
+										$job_title   = $line[get_value ('job_title')];
+										$job_location  = $line[get_value ('job_location')];
+										$salary_range  = $line[get_value ('salary_range')];
+										$employment_time = $line[get_value ('employment_time')];
+										$job_benefits = $line[get_value ('job_benefits')];
+										$job_category = $line[get_value ('job_category')];
+										}
+							
+							// Close opened CSV file
+							fclose($file_handle);
+								}
+							}
 						}
-
+							
 						public function application_settings_page() {
 							$parent_slug = 'edit.php?post_type=applications';
 							$page_title = 'Application Settings';
@@ -634,7 +663,7 @@ class My_First_Plugin_Admin {
 							
 							$upload = wp_upload_dir();
 							$path 		   = wp_upload_dir();
-							$filename 	   = "/applicatoin-export.csv";
+							$filename 	   = "/application-export.csv";
 							$filename	   =  $path['path'].$filename;
 							$file 		   = fopen( $filename, 'a');
 							
@@ -653,21 +682,27 @@ class My_First_Plugin_Admin {
 									foreach ($arr_post as $post) {
 										setup_postdata($post);
 										  
-										$categories = get_the_category();
-										$cats = array();
-										if (!empty($categories)) {
-											foreach ( $categories as $category ) {
-												$cats[] = $category->name;
-											}
-										}
+										
+
+										$terms = get_the_terms( $post->ID, 'application_status', true );
+						
+										// If terms were found.
+										if ( !empty( $terms ) ) {
+
+										foreach ( $terms as $term ):
+											
+											$cats = $term->name;
+
+										endforeach;
+										} 
 						  
-										fputcsv($file, array(get_the_title(), get_the_title(), $cats));
+										fputcsv($file, array(get_the_title(),get_post_meta( $post->ID , 'job_title',true ), $cats));
 
 									}
 									
 								
 								}
-								$filename 	   = "/applicatoin-export.csv";
+								$filename 	   = "/application-export.csv";
 								$fileUrl	   =  $path['url'].$filename;
 								wp_send_json($fileUrl);
 								die();
