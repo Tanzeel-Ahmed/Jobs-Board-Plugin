@@ -97,6 +97,7 @@ class My_First_Plugin_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/my-first-plugin-admin.js', array( 'jquery' ), $this->version, false );
+		wp_enqueue_script('jquery-form');
 
 	}
 
@@ -573,67 +574,115 @@ class My_First_Plugin_Admin {
 					public function jobs_board_settings_page_content() {
 						?>
 					<h1> <?php esc_html_e('Welcome to Jobs Board Settings page.', 'my-plugin-textdomain'); ?> </h1>
+
+					<form id="my_form" method="POST" action="<?php echo admin_url('admin-ajax.php'); ?>" enctype="multipart/form-data">
 					<strong>
 					<label for="my_setting_field"><?php _e( 'Please Select File (only csv files)', 'my-textdomain' ); ?></label>
 					</strong>
 						<input type="file" id="my_setting_field" name="my_setting_field" accept=".csv" value="<?php echo get_option( 'jobs_setting_field' ); ?>">
-						<button name="submit" class="btn btn-primary" id="import" value="Import">Import</button>
-						
+						<input type="hidden" name="action" value="import_jobs">
+						<input type="submit" name="submit" class="btn btn-primary" id="submit" value="submit">
+					</form>
+					
 						<script> 
         
-							jQuery(document).ready(function() { 
-								
-								jQuery('#import').click(function(){
+								jQuery(document).ready(function($) { 
 									
-									var data = {
-										'action': 'import_jobs',
-									};
-									jQuery.post(
-										ajaxurl, 
-										data, 
-										function(response) {
+									$('#my_form').ajaxForm({
+										success: function(response){
 										console.log(response);
-										alert('Import Successfully ');
-									});
+										event.preventDefault();
+										alert('Import Successfully');
+										},
+										error: function(response){
+										console.log(response);
+										},
+										uploadProgress(event, position, total, percentComplete){
+										console.log(percentComplete);
+										},
+										resetForm: true
+									}); 
+								
+									
 								}); 
-							}); 
 						</script>
 					<?php
 					}
 
 					function import_jobs(){
-						
-						// Import CSV
-						if(isset($_POST['submit'])){
+						global $wpdb;
 
-							 // File extension
-  							$extension = pathinfo($_FILES['my_setting_field']['name'], PATHINFO_EXTENSION);
+									// I'd recommend replacing this with your own code to make sure
+									//  the post creation _only_ happens when you want it to.
+									if ( ! isset( $_POST["submit"] ) ) {
+										return;
+									}
 
-							if (!empty($_FILES['my_setting_field']['name'])  && $extension == 'csv') {
-							// Setup settings variables
-							$filename = $_FILES['my_setting_field']['tmp_name'] ;
-							// Open file in read mode
-							$file_handle = fopen($filename,'r');
-							// Skip the first line
-							fgetcsv($file_handle);  
+									// Change these to whatever you set
+									$importjobs = array(
+										"custom-field" => "my_setting_field",
+										"custom-post-type" => "job"
+									);
 
-										// Parse data from CSV file line by line
-										while(($line = fgetcsv($file_handle)) !== FALSE){
-										 
-										// Get row data
-										$job_title   = $line[get_value ('job_title')];
-										$job_location  = $line[get_value ('job_location')];
-										$salary_range  = $line[get_value ('salary_range')];
-										$employment_time = $line[get_value ('employment_time')];
-										$job_benefits = $line[get_value ('job_benefits')];
-										$job_category = $line[get_value ('job_category')];
+									// Get the data from all those CSVs!
+									$posts = function() {
+										$data = array();
+									
+											// Attempt to change permissions if not readable
+											if ( ! is_readable( $file ) ) {
+												chmod( $file, 0744 );
+											}
+
+											// Check if file is writable, then open it in 'read only' mode
+											if ( is_readable( $file ) && $_file = fopen( $file, "r" ) ) {
+
+												// To sum this part up, all it really does is go row by
+												//  row, column by column, saving all the data
+												$post = array();
+
+												// Get first row in CSV, which is of course the headers
+												$header = fgetcsv( $_file );
+
+												while ( $row = fgetcsv( $_file ) ) {
+
+													foreach ( $header as $i => $key ) {
+														$post[$key] = $row[$i];
+													}
+
+													$data[] = $post;
+												}
+
+												fclose( $_file );
+
+											} 
+										
+										return $data;
+									};
+									
+									foreach ( $posts() as $post ) {
+
+										// If the post exists, skip this post and go to the next one
+										
+
+										// Insert the post into the database
+										$post["id"] = wp_insert_post( array(
+											"post_title" => $post["job_title"],
+											"post_type" => $importjobs["job"],
+											"post_status" => "publish"
+										));
+										if ($post["id"]) {
+											update_post_meta($post["id"], 'job_title', $post['Job title']);
+											update_post_meta($post["id"], 'job_location', $post['Job Location']);
+											update_post_meta($post["id"], 'salary_range', $post['Salary Range']);
+											update_post_meta($post["id"], 'job_time', $post['Employment Time']);
+											update_post_meta($post["id"], 'job_benefits', $post['Job Benefits']);
+
+
 										}
-							
-							// Close opened CSV file
-							fclose($file_handle);
+										
+									}
+
 								}
-							}
-						}
 							
 						public function application_settings_page() {
 							$parent_slug = 'edit.php?post_type=applications';
@@ -664,7 +713,7 @@ class My_First_Plugin_Admin {
 							$upload = wp_upload_dir();
 							$path 		   = wp_upload_dir();
 							$filename 	   = "/application-export.csv";
-							$filename	   =  $path['path'].$filename;
+							$filepath	   =  $path['path'].$filename;
 							$file 		   = fopen( $filename, 'a');
 							
 						$header = array('Post Title', 'Job Title', 'Application Status');
