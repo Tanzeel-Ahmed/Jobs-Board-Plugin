@@ -594,12 +594,6 @@ class My_First_Plugin_Admin {
 										event.preventDefault();
 										alert('Import Successfully');
 										},
-										error: function(response){
-										console.log(response);
-										},
-										uploadProgress(event, position, total, percentComplete){
-										console.log(percentComplete);
-										},
 										resetForm: true
 									}); 
 								
@@ -610,31 +604,19 @@ class My_First_Plugin_Admin {
 					}
 
 					function import_jobs(){
-						global $wpdb;
+									if ( isset( $_POST["submit"] ) ) {
+										
+									$csvMimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain');
 
-									// I'd recommend replacing this with your own code to make sure
-									//  the post creation _only_ happens when you want it to.
-									if ( ! isset( $_POST["submit"] ) ) {
-										return;
-									}
+										$file_type = wp_check_filetype(basename($_FILES['my_setting_field']['name']));
+										$uploaded_type = $file_type['type'];
+										 // If file extension is 'csv'
+										 if(!empty($_FILES['my_setting_field']['name']) && in_array($_FILES['my_setting_field']['type'], $csvMimes)){
 
-									// Change these to whatever you set
-									$importjobs = array(
-										"custom-field" => "my_setting_field",
-										"custom-post-type" => "job"
-									);
-
-									// Get the data from all those CSVs!
-									$posts = function() {
-										$data = array();
-									
-											// Attempt to change permissions if not readable
-											if ( ! is_readable( $file ) ) {
-												chmod( $file, 0744 );
-											}
-
+										 $upload = wp_upload_bits($_FILES['my_setting_field']['name'], null, file_get_contents($_FILES['my_setting_field']['tmp_name']));
+										 
 											// Check if file is writable, then open it in 'read only' mode
-											if ( is_readable( $file ) && $_file = fopen( $file, "r" ) ) {
+											$_file = fopen( $upload['url'], "r" );
 
 												// To sum this part up, all it really does is go row by
 												//  row, column by column, saving all the data
@@ -649,39 +631,28 @@ class My_First_Plugin_Admin {
 														$post[$key] = $row[$i];
 													}
 
-													$data[] = $post;
+													$posts[] = $post;
+													
 												}
-
+										 	}	
 												fclose( $_file );
-
-											} 
+											
+								
+									foreach ( $posts as $post ) {
 										
-										return $data;
-									};
-									
-									foreach ( $posts() as $post ) {
-
-										// If the post exists, skip this post and go to the next one
-										
-
 										// Insert the post into the database
-										$post["id"] = wp_insert_post( array(
-											"post_title" => $post["job_title"],
-											"post_type" => $importjobs["job"],
+										$postId = wp_insert_post( array(
+											"post_title" => $post["Job title"],
+											"post_type" => "job",
 											"post_status" => "publish"
 										));
-										if ($post["id"]) {
-											update_post_meta($post["id"], 'job_title', $post['Job title']);
-											update_post_meta($post["id"], 'job_location', $post['Job Location']);
-											update_post_meta($post["id"], 'salary_range', $post['Salary Range']);
-											update_post_meta($post["id"], 'job_time', $post['Employment Time']);
-											update_post_meta($post["id"], 'job_benefits', $post['Job Benefits']);
-
-
+											update_post_meta($postId, 'job_location', $post['Job Location']);
+											update_post_meta($postId, 'salary_range', $post['Salary Range']);
+											update_post_meta($postId, 'job_time', $post['Employment Time']);
+											update_post_meta($postId, 'job_benefits', $post['Job Benefits']);
+											wp_set_object_terms( $postId, $post['Jobs Category'], 'job_category');
 										}
-										
 									}
-
 								}
 							
 						public function application_settings_page() {
