@@ -727,6 +727,65 @@ class My_First_Plugin_Admin {
 								wp_send_json($fileUrl);
 								die();
 						}
+
+
+						public function jobs_board_plugin_settings_page() {
+							
+							$page_title = 'Job Board Settings';
+							$menu_title = 'Jobs Board Settings';
+							$capability = 'manage_options';
+							$slug = 'jobs-setting-page';
+							$callback = array( $this, 'jobs_board_plugin_settings_page_content' );
+							$icon = 'dashicons-admin-settings';
+							$position = 8;
+							
+							add_menu_page($page_title, $menu_title, $capability, $slug, $callback, $icon, $position);
+	
+						}
+
+						function jobs_board_plugin_settings_page_content() {
+							?>
+							<h1> <?php esc_html_e( 'Welcome to Jobs Board Settings page', 'my-plugin-textdomain' ); ?> </h1>
+							<form method="POST" action="options.php">
+							<?php
+							settings_fields( 'settings-page' );
+							do_settings_sections( 'settings-page' );
+							submit_button();
+							?>
+							</form>
+							<?php
+						}
+
+						function my_settings_init() {
+
+							add_settings_section(
+								'settings_page_setting_section',
+								__( 'Jobs setting', 'my-textdomain' ),
+								array( $this,'my_setting_section_callback_function'),
+								'settings-page'
+							);
+						
+								add_settings_field(
+								   'my_setting_field',
+								   __( 'Display Number of Jobs', 'my-textdomain' ),
+								   array( $this,'my_setting_markup'),
+								   'settings-page',
+								   'settings_page_setting_section'
+								);
+						
+								register_setting( 'settings-page', 'my_setting_field' );
+						}
+						function my_setting_section_callback_function() {
+							echo '<p>Display Number of Jobs on Jobs Board Page </p>';
+						}
+						
+						
+						function my_setting_markup() {
+							?>
+							<label for="my-input"><?php _e( 'Nunber of jobs' ); ?></label>
+							<input type="number" id="my_setting_field" name="my_setting_field" value="<?php echo get_option( 'my_setting_field' ); ?>">
+							<?php
+						}
 }
 
 

@@ -183,11 +183,15 @@ class My_First_Plugin {
 		$this->loader->add_action( 'wp_ajax_application_form', $plugin_admin,'ajax_application_form' );
 		$this->loader->add_action( 'wp_ajax_nopriv_application_form', $plugin_admin,'ajax_application_form' );
 		
-		// hook for plugin settings page
+		// hook for jobs board settings page
 		$this->loader->add_action( 'admin_menu', $plugin_admin,'jobs_Board_Settings_page' );
 		$this->loader->add_action( 'wp_ajax_import_jobs', $plugin_admin,'import_jobs' );
+		// Application settings Hook
 		$this->loader->add_action( 'admin_menu', $plugin_admin,'application_settings_page' );
 		$this->loader->add_action( 'wp_ajax_export_all_posts', $plugin_admin,'export_all_posts' );
+		// hook for jobs board plugin settings page
+		$this->loader->add_action( 'admin_init', $plugin_admin,'jobs_board_plugin_settings_page' );
+		$this->loader->add_action( 'admin_init', $plugin_admin,'my_settings_init' );
 	}
 	/**
 	 * Register all of the hooks related to the public-facing functionality
