@@ -190,7 +190,7 @@ class My_First_Plugin {
 		$this->loader->add_action( 'admin_menu', $plugin_admin,'application_settings_page' );
 		$this->loader->add_action( 'wp_ajax_export_all_posts', $plugin_admin,'export_all_posts' );
 		// hook for jobs board plugin settings page
-		$this->loader->add_action( 'admin_init', $plugin_admin,'jobs_board_plugin_settings_page' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin,'jobs_board_plugin_settings_page' );
 		$this->loader->add_action( 'admin_init', $plugin_admin,'my_settings_init' );
 	}
 	/**

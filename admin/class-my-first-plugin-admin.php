@@ -560,10 +560,10 @@ class My_First_Plugin_Admin {
 
 					public function jobs_board_settings_page() {
 						$parent_slug = 'edit.php?post_type=job';
-						$page_title = 'Job Board Settings';
-						$menu_title = 'Job Settings';
+						$page_title = 'Import Jobs';
+						$menu_title = 'Import Jobs';
 						$capability = 'manage_options';
-						$slug = 'jobs-setting-page';
+						$slug = 'import-Jobs-page';
 						$callback = array( $this, 'jobs_board_settings_page_content' );
 						
 						add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $slug, $callback);
@@ -581,7 +581,7 @@ class My_First_Plugin_Admin {
 					</strong>
 						<input type="file" id="my_setting_field" name="my_setting_field" accept=".csv" value="<?php echo get_option( 'jobs_setting_field' ); ?>">
 						<input type="hidden" name="action" value="import_jobs">
-						<input type="submit" name="submit" class="btn btn-primary" id="submit" value="submit">
+						<input type="submit" name="submit" class="btn btn-primary" id="submit" value="Import">
 					</form>
 					
 						<script> 
@@ -731,15 +731,15 @@ class My_First_Plugin_Admin {
 
 						public function jobs_board_plugin_settings_page() {
 							
-							$page_title = 'Job Board Settings';
-							$menu_title = 'Jobs Board Settings';
-							$capability = 'manage_options';
-							$slug = 'jobs-setting-page';
-							$callback = array( $this, 'jobs_board_plugin_settings_page_content' );
-							$icon = 'dashicons-admin-settings';
-							$position = 8;
+							$page_title2 = 'Job Board Settings page';
+							$menu_title2 = 'Jobs Board Settings';
+							$capability2 = 'manage_options';
+							$slug2 = 'job-settings-page';
+							$callback2 = array( $this, 'jobs_board_plugin_settings_page_content' );
+							$icon2 = 'dashicons-admin-settings';
+							$position2 = 40;
 							
-							add_menu_page($page_title, $menu_title, $capability, $slug, $callback, $icon, $position);
+							add_menu_page($page_title2, $menu_title2, $capability2, $slug2, $callback2, $icon2, $position2);
 	
 						}
 
