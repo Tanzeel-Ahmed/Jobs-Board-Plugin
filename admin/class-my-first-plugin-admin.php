@@ -657,10 +657,10 @@ class My_First_Plugin_Admin {
 							
 						public function application_settings_page() {
 							$parent_slug = 'edit.php?post_type=applications';
-							$page_title = 'Application Settings';
-							$menu_title = 'Application Settings';
+							$page_title = 'Export Application';
+							$menu_title = 'Export Application';
 							$capability = 'manage_options';
-							$slug = 'application-settings-page';
+							$slug = 'export-application-page';
 							$callback = array( $this, 'application_settings_page_content' );
 							
 							add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $slug, $callback);
