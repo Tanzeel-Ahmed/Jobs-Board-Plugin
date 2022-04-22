@@ -558,117 +558,22 @@ class My_First_Plugin_Admin {
 					}
 
 
-					public function jobs_board_settings_page() {
-						$parent_slug = 'edit.php?post_type=job';
-						$page_title = 'Import Jobs';
-						$menu_title = 'Import Jobs';
-						$capability = 'manage_options';
-						$slug = 'import-Jobs-page';
-						$callback = array( $this, 'jobs_board_settings_page_content' );
-						
-						add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $slug, $callback);
-
-						
-					}
-
-					public function jobs_board_settings_page_content() {
-						?>
-					<h1> <?php esc_html_e('Welcome to Jobs Board Settings page.', 'my-plugin-textdomain'); ?> </h1>
-
-					<form id="my_form" method="POST" action="<?php echo admin_url('admin-ajax.php'); ?>" enctype="multipart/form-data">
-					<strong>
-					<label for="my_setting_field"><?php _e( 'Please Select File (only csv files)', 'my-textdomain' ); ?></label>
-					</strong>
-						<input type="file" id="my_setting_field" name="my_setting_field" accept=".csv" value="<?php echo get_option( 'jobs_setting_field' ); ?>">
-						<input type="hidden" name="action" value="import_jobs">
-						<input type="submit" name="submit" class="btn btn-primary" id="submit" value="Import">
-					</form>
 					
-						<script> 
-        
-								jQuery(document).ready(function($) { 
-									
-									$('#my_form').ajaxForm({
-										success: function(response){
-										console.log(response);
-										event.preventDefault();
-										alert('Import Successfully');
-										},
-										resetForm: true
-									}); 
-								
-									
-								}); 
-						</script>
-					<?php
-					}
-
-					function import_jobs(){
-									if ( isset( $_POST["submit"] ) ) {
-										
-									$csvMimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain');
-
-										$file_type = wp_check_filetype(basename($_FILES['my_setting_field']['name']));
-										$uploaded_type = $file_type['type'];
-										 // If file extension is 'csv'
-										 if(!empty($_FILES['my_setting_field']['name']) && in_array($_FILES['my_setting_field']['type'], $csvMimes)){
-
-										 $upload = wp_upload_bits($_FILES['my_setting_field']['name'], null, file_get_contents($_FILES['my_setting_field']['tmp_name']));
-										 
-											// Check if file is writable, then open it in 'read only' mode
-											$_file = fopen( $upload['url'], "r" );
-
-												// To sum this part up, all it really does is go row by
-												//  row, column by column, saving all the data
-												$post = array();
-
-												// Get first row in CSV, which is of course the headers
-												$header = fgetcsv( $_file );
-
-												while ( $row = fgetcsv( $_file ) ) {
-
-													foreach ( $header as $i => $key ) {
-														$post[$key] = $row[$i];
-													}
-
-													$posts[] = $post;
-													
-												}
-										 	}	
-												fclose( $_file );
-											
-								
-									foreach ( $posts as $post ) {
-										
-										// Insert the post into the database
-										$postId = wp_insert_post( array(
-											"post_title" => $post["Job title"],
-											"post_type" => "job",
-											"post_status" => "publish"
-										));
-											update_post_meta($postId, 'job_location', $post['Job Location']);
-											update_post_meta($postId, 'salary_range', $post['Salary Range']);
-											update_post_meta($postId, 'job_time', $post['Employment Time']);
-											update_post_meta($postId, 'job_benefits', $post['Job Benefits']);
-											wp_set_object_terms( $postId, $post['Jobs Category'], 'job_category');
-										}
-									}
-								}
 							
-						public function application_settings_page() {
+						public function export_application_page() {
 							$parent_slug = 'edit.php?post_type=applications';
 							$page_title = 'Export Application';
 							$menu_title = 'Export Application';
 							$capability = 'manage_options';
 							$slug = 'export-application-page';
-							$callback = array( $this, 'application_settings_page_content' );
+							$callback = array( $this, 'export_application_page_content' );
 							
 							add_submenu_page($parent_slug, $page_title, $menu_title, $capability, $slug, $callback);
 	
 							
 						}
 						
-						public function application_settings_page_content() {
+						public function export_application_page_content() {
 							?>
 						<center>
 						<h1> <?php esc_html_e('Welcome to Application Settings page', 'my-plugin-textdomain'); ?> </h1></br>
@@ -739,7 +644,15 @@ class My_First_Plugin_Admin {
 							$position2 = 40;
 							
 							add_menu_page($page_title2, $menu_title2, $capability2, $slug2, $callback2, $icon2, $position2);
-	
+							
+							$parent_slug3 = 'job-settings-page';
+							$page_title3 = 'Import Jobs';
+							$menu_title3 = 'Import Jobs';
+							$capability3 = 'manage_options';
+							$slug3 = 'import-Jobs-page';
+							$callback3 = array( $this, 'import_jobs_settings_page_content' );
+							
+							add_submenu_page($parent_slug3, $page_title3, $menu_title3, $capability3, $slug3, $callback3);
 						}
 
 						function jobs_board_plugin_settings_page_content() {
@@ -785,6 +698,92 @@ class My_First_Plugin_Admin {
 							<input type="number" id="my_setting_field" name="my_setting_field" value="<?php echo get_option( 'my_setting_field' ); ?>">
 							<?php
 						}
+
+						
+	
+						public function import_jobs_settings_page_content() {
+							?>
+						<h1> <?php esc_html_e('Welcome to Jobs Board Settings page.', 'my-plugin-textdomain'); ?> </h1>
+	
+						<form id="my_form" method="POST" action="<?php echo admin_url('admin-ajax.php'); ?>" enctype="multipart/form-data">
+						<strong>
+						<label for="my_setting_field"><?php _e( 'Please Select File (only csv files)', 'my-textdomain' ); ?></label>
+						</strong>
+							<input type="file" id="my_setting_field" name="my_setting_field" accept=".csv" value="<?php echo get_option( 'jobs_setting_field' ); ?>">
+							<input type="hidden" name="action" value="import_jobs">
+							<input type="submit" name="submit" class="btn btn-primary" id="submit" value="Import">
+						</form>
+						
+							<script> 
+			
+									jQuery(document).ready(function($) { 
+										
+										$('#my_form').ajaxForm({
+											success: function(response){
+											console.log(response);
+											event.preventDefault();
+											alert('Import Successfully');
+											},
+											resetForm: true
+										}); 
+									
+										
+									}); 
+							</script>
+						<?php
+						}
+	
+						function import_jobs(){
+										if ( isset( $_POST["submit"] ) ) {
+											
+										$csvMimes = array('text/x-comma-separated-values', 'text/comma-separated-values', 'application/octet-stream', 'application/vnd.ms-excel', 'application/x-csv', 'text/x-csv', 'text/csv', 'application/csv', 'application/excel', 'application/vnd.msexcel', 'text/plain');
+	
+											$file_type = wp_check_filetype(basename($_FILES['my_setting_field']['name']));
+											$uploaded_type = $file_type['type'];
+											 // If file extension is 'csv'
+											 if(!empty($_FILES['my_setting_field']['name']) && in_array($_FILES['my_setting_field']['type'], $csvMimes)){
+	
+											 $upload = wp_upload_bits($_FILES['my_setting_field']['name'], null, file_get_contents($_FILES['my_setting_field']['tmp_name']));
+											 
+												// Check if file is writable, then open it in 'read only' mode
+												$_file = fopen( $upload['url'], "r" );
+	
+													// To sum this part up, all it really does is go row by
+													//  row, column by column, saving all the data
+													$post = array();
+	
+													// Get first row in CSV, which is of course the headers
+													$header = fgetcsv( $_file );
+	
+													while ( $row = fgetcsv( $_file ) ) {
+	
+														foreach ( $header as $i => $key ) {
+															$post[$key] = $row[$i];
+														}
+	
+														$posts[] = $post;
+														
+													}
+												 }	
+													fclose( $_file );
+												
+									
+										foreach ( $posts as $post ) {
+											
+											// Insert the post into the database
+											$postId = wp_insert_post( array(
+												"post_title" => $post["Job title"],
+												"post_type" => "job",
+												"post_status" => "publish"
+											));
+												update_post_meta($postId, 'job_location', $post['Job Location']);
+												update_post_meta($postId, 'salary_range', $post['Salary Range']);
+												update_post_meta($postId, 'job_time', $post['Employment Time']);
+												update_post_meta($postId, 'job_benefits', $post['Job Benefits']);
+												wp_set_object_terms( $postId, $post['Jobs Category'], 'job_category');
+											}
+										}
+									}
 }
 
 
