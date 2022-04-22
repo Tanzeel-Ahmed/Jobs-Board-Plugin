@@ -35,6 +35,9 @@
 
 </head>
 <body>
+
+<?php
+if(empty(get_option( 'my_setting_field3' ))){ ?>
   <div class="col-md-6 offset-md-3 mt-5">
     <br>
     <h1><center>Job Application Form</center></h1>
@@ -57,13 +60,17 @@
         <div class="col-10">
           <input class="form-control" name="phone" type="tel"  placeholder="+923123456789" id="phone" required>
         </div>
-      </div>
+      </div> <?php
+      if(empty(get_option( 'my_setting_field4' ))){?>
       <div class="form-group">
         <label for="example-date-input" class="col-3 col-form-label"> Date</label>
         <div class="col-10">
           <input class="form-control" name="date" type="date" value="2020-02-01" id="date"  required>
         </div>
       </div>
+      <?php } else{
+       echo'';
+      }?>
       <div class="form-group mt-3">
         <label class="mr-4"  >Upload your Resume: (only pdf and doc files uploaded)</label>
         <input type="file" name="file" id="filetoupload" accept=".pdf,.doc" required>
@@ -72,6 +79,9 @@
       <input type="submit" name="submit" class="btn btn-primary" id="submit" value="submit">
     </form>
   </div>
+      <?php } else {
+         echo get_option( 'my_setting_field3' );
+      }?>
 </body>
 </html>
 <?php get_footer();?>

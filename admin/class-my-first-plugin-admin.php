@@ -672,14 +672,14 @@ class My_First_Plugin_Admin {
 
 							add_settings_section(
 								'settings_page_setting_section',
-								__( 'Jobs Board Settings', 'my-textdomain' ),
+								__( 'Settings tab and fields', 'my-textdomain' ),
 								array( $this,'my_setting_section_callback_function'),
 								'settings-page'
 							);
 						
 								add_settings_field(
 								   'my_setting_field',
-								   __( 'Display Number of Jobs', 'my-textdomain' ),
+								   __( 'Display Number of Jobs.', 'my-textdomain' ),
 								   array( $this,'my_setting_markup'),
 								   'settings-page',
 								   'settings_page_setting_section'
@@ -687,14 +687,32 @@ class My_First_Plugin_Admin {
 
 								add_settings_field(
 									'my_setting_field2',
-									__( 'Change text for search button in Jobs page', 'my-textdomain' ),
+									__( 'Change text for search button in Jobs page.', 'my-textdomain' ),
 									array( $this,'my_setting_markup2'),
+									'settings-page',
+									'settings_page_setting_section'
+								 );
+
+								 add_settings_field(
+									'my_setting_field3',
+									__( 'Display Text in place of form when a job vacancies is closed.', 'my-textdomain' ),
+									array( $this,'my_setting_markup3'),
+									'settings-page',
+									'settings_page_setting_section'
+								 );
+
+								 add_settings_field(
+									'my_setting_field4',
+									__( 'Checkboxe to hide date field from application form.', 'my-textdomain' ),
+									array( $this,'my_setting_markup4'),
 									'settings-page',
 									'settings_page_setting_section'
 								 );
 						
 								register_setting( 'settings-page', 'my_setting_field' );
 								register_setting( 'settings-page', 'my_setting_field2' );
+								register_setting( 'settings-page', 'my_setting_field3' );
+								register_setting( 'settings-page', 'my_setting_field4' );
 						}
 						function my_setting_section_callback_function() {
 							
@@ -703,15 +721,31 @@ class My_First_Plugin_Admin {
 						
 						function my_setting_markup() {
 							?>
-							<label for="my-input"><?php _e( 'Nunber of jobs' ); ?></label>
+							<label for="my-input"><?php _e( 'Nunber of jobs:' ); ?></label>
 							<input type="number" id="my_setting_field" name="my_setting_field" value="<?php echo get_option( 'my_setting_field' ); ?>">
 							<?php
 						}
 
 						function my_setting_markup2() {
 							?>
-							<label for="my-input"><?php _e( 'Change text' ); ?></label>
-							<input type="text" id="my_setting_field2" name="my_setting_field2" value="<?php echo get_option( 'my_setting_field2' ); ?>">
+							<label for="my-input"><?php _e( 'Change button name:' ); ?></label>
+							<input type="text" id="my_setting_field2" name="my_setting_field2"  placeholder="Enter button name" value="<?php echo get_option( 'my_setting_field2' ); ?>">
+							<?php
+						}
+
+						function my_setting_markup3() {
+							?>
+							<label for="my-input"><?php _e( 'Enter text to display in place of form:' ); ?></label>
+							<input type="text" id="my_setting_field3" name="my_setting_field3" placeholder="Enter Text" value="<?php echo get_option( 'my_setting_field3' ); ?>">
+							<?php
+						}
+
+						function my_setting_markup4() {
+							$checkbox_value=get_option( 'my_setting_field4' );
+							?>
+							<label for="my-input"><?php _e( 'Hide Date:' ); ?></label>
+							<input type="checkbox" id="my_setting_field4" name="my_setting_field4" <?php if(!empty($checkbox_value)) { echo'checked'; }?> value="1">
+							
 							<?php
 						}
 
