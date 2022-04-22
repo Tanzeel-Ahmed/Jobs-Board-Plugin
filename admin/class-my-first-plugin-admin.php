@@ -681,11 +681,10 @@ class My_First_Plugin_Admin {
 
 						function export_all_posts() {
 							
-							$upload = wp_upload_dir();
 							$path 		   = wp_upload_dir();
 							$filename 	   = "/application-export.csv";
 							$filepath	   =  $path['path'].$filename;
-							$file 		   = fopen( $filename, 'a');
+							$file 		   = fopen( $filepath, 'a');
 							
 						$header = array('Post Title', 'Job Title', 'Application Status');
 							fputcsv( $file, $header );
