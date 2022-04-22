@@ -672,7 +672,7 @@ class My_First_Plugin_Admin {
 
 							add_settings_section(
 								'settings_page_setting_section',
-								__( 'Jobs setting', 'my-textdomain' ),
+								__( 'Jobs Board Settings', 'my-textdomain' ),
 								array( $this,'my_setting_section_callback_function'),
 								'settings-page'
 							);
@@ -684,11 +684,20 @@ class My_First_Plugin_Admin {
 								   'settings-page',
 								   'settings_page_setting_section'
 								);
+
+								add_settings_field(
+									'my_setting_field2',
+									__( 'Change text for search button in Jobs page', 'my-textdomain' ),
+									array( $this,'my_setting_markup2'),
+									'settings-page',
+									'settings_page_setting_section'
+								 );
 						
 								register_setting( 'settings-page', 'my_setting_field' );
+								register_setting( 'settings-page', 'my_setting_field2' );
 						}
 						function my_setting_section_callback_function() {
-							echo '<p>Display Number of Jobs on Jobs Board Page </p>';
+							
 						}
 						
 						
@@ -699,7 +708,13 @@ class My_First_Plugin_Admin {
 							<?php
 						}
 
-						
+						function my_setting_markup2() {
+							?>
+							<label for="my-input"><?php _e( 'Change text' ); ?></label>
+							<input type="text" id="my_setting_field2" name="my_setting_field2" value="<?php echo get_option( 'my_setting_field2' ); ?>">
+							<?php
+						}
+
 	
 						public function import_jobs_settings_page_content() {
 							?>

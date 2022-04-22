@@ -175,7 +175,7 @@ class My_First_Plugin_Public {
   					<input type="range" name="job_salary" min="1" max="100" class="slider" id="myRange" >
 					</div>
 					<div class="row">
-					<input type="submit" name="submit" value="Go">
+					<input type="submit" name="submit" value="<?php echo get_option( 'my_setting_field2' ); ?>">
 					</div>
 				</form>
 				</div>
