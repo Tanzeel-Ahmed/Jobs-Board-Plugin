@@ -679,7 +679,7 @@ class My_First_Plugin_Admin {
 						
 								add_settings_field(
 								   'my_setting_field',
-								   __( 'Display Number of Jobs.', 'my-textdomain' ),
+								   __( 'Display Number of Jobs on Jobs Board Page.', 'my-textdomain' ),
 								   array( $this,'my_setting_markup'),
 								   'settings-page',
 								   'settings_page_setting_section'
@@ -695,7 +695,7 @@ class My_First_Plugin_Admin {
 
 								 add_settings_field(
 									'my_setting_field3',
-									__( 'Display Text in place of form when a job vacancies is closed.', 'my-textdomain' ),
+									__( 'Display Text in place of form when job vacancies are closed.', 'my-textdomain' ),
 									array( $this,'my_setting_markup3'),
 									'settings-page',
 									'settings_page_setting_section'
@@ -708,11 +708,20 @@ class My_First_Plugin_Admin {
 									'settings-page',
 									'settings_page_setting_section'
 								 );
+
+								 add_settings_field(
+									'my_setting_field5',
+									__( 'Checkboxe to hide Address field from application form.', 'my-textdomain' ),
+									array( $this,'my_setting_markup5'),
+									'settings-page',
+									'settings_page_setting_section'
+								 );
 						
 								register_setting( 'settings-page', 'my_setting_field' );
 								register_setting( 'settings-page', 'my_setting_field2' );
 								register_setting( 'settings-page', 'my_setting_field3' );
 								register_setting( 'settings-page', 'my_setting_field4' );
+								register_setting( 'settings-page', 'my_setting_field5' );
 						}
 						function my_setting_section_callback_function() {
 							
@@ -722,7 +731,7 @@ class My_First_Plugin_Admin {
 						function my_setting_markup() {
 							?>
 							<label for="my-input"><?php _e( 'Nunber of jobs:' ); ?></label>
-							<input type="number" id="my_setting_field" name="my_setting_field" value="<?php echo get_option( 'my_setting_field' ); ?>">
+							<input type="number" id="my_setting_field" name="my_setting_field"  placeholder="Enter numbers" value="<?php echo get_option( 'my_setting_field' ); ?>">
 							<?php
 						}
 
@@ -745,6 +754,15 @@ class My_First_Plugin_Admin {
 							?>
 							<label for="my-input"><?php _e( 'Hide Date:' ); ?></label>
 							<input type="checkbox" id="my_setting_field4" name="my_setting_field4" <?php if(!empty($checkbox_value)) { echo'checked'; }?> value="1">
+							
+							<?php
+						}
+
+						function my_setting_markup5() {
+							$checkbox_value=get_option( 'my_setting_field5' );
+							?>
+							<label for="my-input"><?php _e( 'Hide Address:' ); ?></label>
+							<input type="checkbox" id="my_setting_field5" name="my_setting_field5" <?php if(!empty($checkbox_value)) { echo'checked'; }?> value="1">
 							
 							<?php
 						}

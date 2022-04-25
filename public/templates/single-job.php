@@ -50,11 +50,15 @@ if(empty(get_option( 'my_setting_field3' ))){ ?>
       <div class="form-group">
         <label for="exampleInputEmail1">Email address</label>
         <input type="email" name="email" class="form-control" id="mail" aria-describedby="emailHelp" placeholder="Enter your email address" required>
-      </div>
+      </div> <?php
+      if(empty(get_option( 'my_setting_field5' ))){?>
       <div class="form-group">
         <label for="inputAddress">Home Address</label>
         <input type="text" name="address" class="form-control" id="address" placeholder="1234 Main St"  required>
       </div>
+      <?php } else{
+       echo'';
+      }?>
       <div class="form-group">
         <label for="example-tel-input" class="col-2 col-form-label" >Phone Number</label>
         <div class="col-10">
