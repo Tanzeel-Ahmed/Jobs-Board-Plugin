@@ -761,7 +761,7 @@ class My_First_Plugin_Admin {
 						function my_setting_markup5() {
 							$checkbox_value=get_option( 'my_setting_field5' );
 							?>
-							<label for="my-input"><?php _e( 'Hide Address:' ); ?></label>
+							<label for="my-input"><?php _e( 'Hide address field:' ); ?></label>
 							<input type="checkbox" id="my_setting_field5" name="my_setting_field5" <?php if(!empty($checkbox_value)) { echo'checked'; }?> value="1">
 							
 							<?php
