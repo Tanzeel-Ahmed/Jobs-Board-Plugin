@@ -752,7 +752,7 @@ class My_First_Plugin_Admin {
 						function my_setting_markup4() {
 							$checkbox_value=get_option( 'my_setting_field4' );
 							?>
-							<label for="my-input"><?php _e( 'Hide Date:' ); ?></label>
+							<label for="my-input"><?php _e( 'Hide date field:' ); ?></label>
 							<input type="checkbox" id="my_setting_field4" name="my_setting_field4" <?php if(!empty($checkbox_value)) { echo'checked'; }?> value="1">
 							
 							<?php
